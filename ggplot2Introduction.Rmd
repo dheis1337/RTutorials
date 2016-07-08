@@ -1,0 +1,40 @@
+---
+title: "Data Vizualizations"
+output: html_document
+---
+
+
+### Why Should You Care?
+
+Our brains our hardwired to interpret data visually. Don't believe me? Take a look at the table below for a few seconds and try to pull out some patterns. 
+
+(Insert generic data table)
+
+Now take a look at a graphic of the same data. 
+
+(Insert graphic)
+
+Which one is more appealing? Which tells a better story? Better yet - which one *paints a better picture*. There should be no surprise why this is such a common idiom. 
+
+Since we are such visual creatures, one of the most important skills a data scientist can have is being able to create not only stunning visualizations, but ones that tell amazing stories. No matter on who your visualization is for, you are always trying to explain some kind of relationship. Hold on. Before I get ahead of myself, let me explain what I meant when I said "No matter who your visualization is for...". 
+
+### Explantory vs. Exploratory
+
+The visualizations you create will almost always look to serve one of two purposes: to explore or to explain. When you are creating visualizaions to explore, you are doing so in order to learn about the data for yourself (or maybe your team). Exploratory visualizations are great ways to begin any data science project, as they can sometimes show things that weren't readily known about your data. Imagine you had a dataset with 1 million rows - there is no way you can process this amount of information and begin to determine what seems "normal" (not from a statistical standpoint, but from a colloquial one). This is where visualizations can be a great tool! Take a look at the example graphic below:
+
+(Create a grapic showing an outlier using base R)
+
+See the outliers? These can skew your analysis heavily, and had you not seen this graphic you may have never known why your model could be more accurately fit! 
+
+If you're not looking to explore your data, you're looking to explain it. Explaining your data is important when it comes time to use it. Whether you want to publish your analysis, or persuade higher-ups at work, creating visualizations are the foundation for doing so; and creating stunning, thought-provoking visualizations is one thing that separates good data scientists from great ones! We'll go into explanatory visualizations in a little. For now, let's dive into learning how to create visualizations in *R*!
+
+### ggplot2
+
+One of the most widely-known packages in *R* is `ggplot2`. If you ever read seen a visualization that was produced using *R*, there's a good chance that it was designed using `ggplot2`. The reason why it's so popular is because it is a powerful visualization generator that also boasts amazing functionality! Head on over to the next section to start learning all about `ggplot2`! 
+
+
+
+
+
+
+
