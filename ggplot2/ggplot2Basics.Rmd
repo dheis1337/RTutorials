@@ -1,0 +1,53 @@
+---
+title: "ggplo2 Basics"
+output: html_document
+---
+
+### Background
+`ggplot2` is one of the most widely used packages in all of `R`! It was created 
+by Hadley Wickham, a very well-known data scientist and deevloper. Check out his 
+site here, <http://hadley.nz/>. Once there, take a look around and even check out
+some of the other amazing packages he's created! Some of these include: `tidyr`, 
+`dplyr`, `stringr`, and many more! Some of these we're going to talk about in depth
+in other tutorials, but for now, back to `ggplot2`! 
+
+### Why ggplot2?
+Although base *R* comes with solid visualizations capabilities, it's really hard
+to beat what `ggplot2` brings to the table. Not only is using `ggplot2` extremely
+straightforward (after some practice), but the end result is almost always more
+aesthetically pleasing than what could be produced through base *R* graphics. Before
+I explain more about `ggplot2`, let's look at a graphic made using it.
+
+Here's one using the `diamonds` dataset that comes with `ggplot2`:
+
+```{r echo = FALSE}
+library(ggplot2)
+ggplot(diamonds, aes(x = carat, y = price, col = clarity)) + geom_point(alpha = .2)
+```
+
+
+
+Although there is a lot going on in this visualization, we can see clearly an 
+exponential increase in the `price` of a diamond based on its `carat` size. However,
+this graphic extends this analysis one step further and provides a color representation
+for each `clarity` classification. Using this additional layer, we can see that some 
+depending on the `clarity` classification, the price of a diamond increases
+faster based on changes in the `carat` size. 
+
+
+
+Okay, so this graphic is pretty cool, but it's also extremely basic. In fact, it 
+only took one line of code to make:
+``` {r, eval = FALSE}
+ggplot(diamonds, aes(x = carat, y = price, col = clarity)) + geom_point(alpha = .2)
+```
+
+
+
+This is your first glimpse at what the syntax for a `ggplot2` visualization looks like. 
+Don't worry about what's actually happening here, just notice how simple it was 
+to create the above plot. But what makes `ggplot2` so simple? When creating the package, 
+Hadley Wickham decided to build it upon the foundations of the grammar of graphics. Before 
+we can truly understand the power and simplicity of `ggplot2`, we must understand the basics
+of the grammar of graphics; which is where the *gg* in `ggplot2` comes from. Check out the next
+section to learn more!
