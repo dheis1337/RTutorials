@@ -1,0 +1,155 @@
+---
+title: "The Grammar of Graphics"
+output: html_document
+---
+
+The grammar of graphics was first created by Leland Wilkinson in the text *The Grammar of Graphics* (obvious, I know). In this book, he presented the foundations of the grammar, which takes a layering approach to developing digital graphics. Hadley Wickham, the creator of `ggplot2`, slightly modified Wilkinson's grammar, which he explains in this [article](http://vita.had.co.nz/papers/layered-grammar.pdf). Since we're talking about `ggplot2`, I'll go ahead and adopt this modification to the grammar of graphics. 
+
+## Hadley's Grammar
+I strongly encourage you to read the article I linked above (seriously, do it). However, in order to save you some time, I'll sum it up for you. 
+
+In the beginning of the article, Hadley explains the basics of the graphics through an example of some tabular data and using this data to create a scatter plot. In section 3, Hadley begins to touch on how the grammar of graphics is formulated. Hadley's modified grammar consists of creating graphics through various componenets. These components correspond to different parts of the
+graphic they create, making it easy to manipulate the different pieces of the 
+graphic in an individual manner. In the `ggplot2` grammar, the components are defined as:
+
+1. Default dataset and variable mappings
+2. One or more layers, each layer has one:
+    i. geometric object
+    ii. statistical transformation
+    iii. position adjustment
+    iiii. dataset and aesthetic mappings (optional)
+3. One scale for each aesthetic mapping 
+4. Coordinate system
+5. Facet specification
+
+As you can see, the second component makes up a large portion of the overall graphic, 
+but all the other components play an important role in the finished product. 
+Let's take a look at the different components and their main functions individually
+now. 
+
+### Default Dataset and Variable Mappings
+This component is the beginning of our plot and is created using the `ggplot()` 
+function. The `ggplot()` function has two arguments, the `data` and the `mappings`. 
+Alluding back to our plot of the `diamonds` dataset in the previous section, 
+`ggplot(data = diamonds, aes(x = carat, y = price, col = clarity)) + geom_point(alpha = .4)`,
+the overall dataset is `diamonds` which is defined using the `data` argument of 
+the `ggplot` function. Next, we have our `mappings`, which are defined with the 
+`aes()` function - short for aesthetics. In the above code, we map the `carat` 
+variable to the x-axis, the `price` variable to the y-axis, and the `clarity` 
+variable to `col` (which is short for color). Now, this first component will 
+simply create the plot object - take a look:
+
+```{r echo = FALSE}
+library(ggplot2)
+ggplot(data = diamonds, aes(x = carat, y = price, col = clarity))
+```
+
+As you can see, there is simply a blank plot. Think about this first component 
+as creating the canvas that we will later paint our picture on. One major advantage of `ggplot2` is that all of these components are objects, meaning we can save them as variables
+if we want to and manipulate them more easily later on. Let's go ahead and save our
+blank canvas to the variable `p`.
+
+```{r echo = TRUE}
+p <- ggplot(data = diamonds, aes(x = carat, y = price, col = clarity))
+```
+
+### Layers
+The *layers* component is the workhorse of our visualizaiton. This is where we determine
+how our data is represented through the *geom* we choose, how our data is transformed 
+through the *stat* we choose, and how our data is positioned on our plot through 
+the *position* we choose. 
+
+
+#### Geom(s)
+The simplest plot can be created by adding a *geom* to our base object `p`, like such: 
+
+```{r echo = TRUE}
+p + geom_point()
+```
+
+Just by simply adding (note the use of the + symbol) `geom_point()` we now have our 
+same beautiful plot we started with!
+
+As you can see from the above code, we added a **point geom**, which specifies a point
+for each (x, y) pair in our dataset according to our mapping in the original object, `p`. 
+When specifing **geoms** in our code, it's easiest to use the specific **geom** functions, 
+which have the form `geom_x` where *x* is the type of geometric object you're using. 
+For a list of all possible geometric objects you can use in `ggplot2`, check out this 
+[link](http://docs.ggplot2.org/current/). In later tutorials I will go through how to 
+use some of the most important **geoms**, but this documentation is a great place to start!
+
+#### Stat(s)
+When creating visualizations we can use a statistical transformation to help summarize
+our data before it is plotted. We can specify our **stat* using a function of the 
+form `stat_x`, where is *x* is the different summaries `ggplot2` can create. Let's take a 
+look at one here:
+
+``` {r echo = TRUE}
+ggplot(diamonds, aes(x = carat)) + stat_bin(binwidth = 1/10)
+```
+
+As you can see, using this statistical transformation we have created a histogram 
+of the different carat sizes of our data. Just as in the **geom** example, all we did 
+was add one layer to a plot object and we've created an informative graphic. 
+
+#### Position
+The final piece of our layer component is the position adjustment we choose. This 
+gives us the ability to change where and how our **geom** is represented on our 
+visualization. Altering the position of our data is especially helpful when using
+bar charts. Let's take a look at three examples:
+
+``` {r echo = TRUE}
+ggplot(diamonds, aes(clarity, fill = cut)) + geom_bar(position = "stack")
+``` 
+
+``` {r echo = TRUE}
+ggplot(diamonds, aes(clarity, fill = cut)) + geom_bar(position = "dodge")
+``` 
+
+``` {r echo = TRUE}
+ggplot(diamonds, aes(clarity, fill = cut)) + geom_bar(position = "fill")
+``` 
+
+Each visualization specifies a different position adjustment using the appropriately 
+named `position` arguemnt inside the `geom_bar()` function. When we set `position` to
+*stack*, each different measure of `clarity` is given it's own bar, and each `cut` in 
+its repspective `clarity` level is given a portion of this bar. 
+
+When we set `position` to *dodge*, instead of having these portions stacked on top of one
+another, they are placed side-by-side. 
+
+Finally, when we set `position` to *fill*, we actually get a new representation of our
+data. Instead of giving us a raw count of each `cut` based on `clarity`, we now have
+the proportion of each `cut` based on `clarity`. Just by changing the `position` arguement,
+we have created an entirely new way to represent and interpret our data! 
+
+The **geom(s)**, **stat(s)**, and **position** are the three peices of the layers component that you will be manipulating most often, but there are two more that are important and can be used to add an incredible deal to your visualizations! These are the **data** and **mapping** of the layer.
+
+#### Data and Mappings
+
+Now, you might be wondering there is a **data** and **mapping** option included in the layer component. After all, the first component of Hadley's grammar includes the **data** and **mappings** we are using. The grammar includes two opportunities to specify your **data** and **mappings** because it allows you to view different subsets of your data on the same plot! This might be a little confusing, but a quick example will clear everything up! 
+
+First, let's just create a basic timeseries plot using the `longley` dataset. Let's take
+a look at the changes in the unemployed population, denoted by `Unemployed`, from 1947 
+to 1962. 
+```{r echo = TRUE}
+data("longley")
+ggplot(longley, aes(x = Year, y = Unemployed)) + geom_line(color = "red")
+```
+
+Okay, nothing special here. However, we can make this plot a little more interesting by
+adding another variable to it, namely the number of people serving in the armed forces, 
+denoted by `Armed.forces`. To do this, we will simply add another layer using the `geom_line()` argument. 
+```{r echo = TRUE}
+ggplot(longley, aes(x = Year, y = Unemployed)) +
+  geom_line() +
+  geom_line(aes(y = Armed.Forces), color = "red")
+```
+
+Notice how we now have two lines represented on our plot! All we did was simply add another layer using the `geom_line()` function, and we can now visualize how these two 
+variables interact with one another. As a side note, this visualization has some glaring 
+issues with it. Take a second to look over it, see if you can come up with things that could
+be done to improve it. We'll go over ways to make visualizations the best they can be in a 
+later post, but for now let's stay focused on the grammar! 
+
+Now that we've touched on all of the
